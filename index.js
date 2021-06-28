@@ -2,15 +2,15 @@ const {
   response,
   request
 } = require('express')
+require('dotenv').config()
 const express = require('express')
 let morgan = require('morgan')
 const app = express()
 const cors = require('cors')
+const Person = require('./models/person')
 app.use(express.json())
 app.use(express.static('build'))
-
 app.use(cors())
-
 morgan.token('content', function (req, res) { return JSON.stringify(req.body) })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :content'))
 
@@ -45,9 +45,15 @@ let persons = [{
     "id": 4
   }
 ]
+
+
 app.get('/api/person', (request, response) => {
+Person.find({}).then(persons => {
   response.json(persons)
+  console.log(persons);
 })
+})
+
 
 app.get('/api/info', (request, response) => {
   const data = `<div>${new Date()}</div>`
@@ -82,24 +88,14 @@ const generated = () => {
 
 app.post('/api/person', (request, response) => {
   const body = request.body
-  const name = persons.find((p) => p.name === body.name)
-  if (!body.number || !body.name ) {
-    return response.status(400).json({
-      Error: 'content missing'
-    })
-  }
-  if (name) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    })
-  }
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generated()
-  }
-  persons = persons.concat(person)
-  response.json(person)
+  })
+  person.save().then(newPerson => {
+    response.json(person)
+  })
+
 })
 
 const unknownEndpoint = (request, response) => {
@@ -107,7 +103,7 @@ const unknownEndpoint = (request, response) => {
 }
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
