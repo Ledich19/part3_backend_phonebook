@@ -10,7 +10,8 @@
     "build:ui": "rm -rf build && cd ../../part_2/phonebook/ && npm run build --prod && cp -r build ../../part_3/phonebook/",
     "deploy": "git push heroku main",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "logs:prod": "heroku logs --tail"
+    "logs:prod": "heroku logs --tail",
+    "lint": "eslint ."
   },
   "author": "Aleksandr Chumachenko",
   "license": "ISC",
@@ -19,6 +20,13 @@
   },
   "homepage": "https://github.com/Ledich19/part3-notes-backend-phonebook#readme",
   "devDependencies": {
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "nodemon": "^2.0.7"
   },
   "dependencies": {
