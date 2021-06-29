@@ -5,7 +5,14 @@ Content-Type: application/json
   "name": "aegraeeruwrga",
   "number": "040-123456"
 }
+###
+POST http://localhost:3001/api/person
+Content-Type: application/json
 
+{
+  "name": "ae",
+  "number": "040-123456"
+}
 ###
 POST http://localhost:3001/api/person
 Content-Type: application/json
